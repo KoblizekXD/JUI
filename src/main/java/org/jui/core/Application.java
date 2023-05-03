@@ -4,10 +4,10 @@ import org.jui.core.api.API;
 import org.jui.core.api.Configurator;
 
 public abstract class Application<T extends API> {
-    private Configurator<T> config = new Configurator<>();
+    private Configurator config = new Configurator();
     public abstract void onLaunch();
 
-    public Configurator<T> getConfigurator() {
+    public Configurator getConfigurator() {
         return config;
     }
 }
