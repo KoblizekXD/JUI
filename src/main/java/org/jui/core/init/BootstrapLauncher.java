@@ -48,7 +48,12 @@ public final class BootstrapLauncher {
             );
             FieldAccessor.getFieldAndSet(w.getClass().getSuperclass(), w, "hwnd", handle);
         });
-        Window main = ((List<Window>)accessor.getField("handles")).get(0);
+        Window main = null;
+        try {
+            main = ((List<Window>)accessor.getField("handles")).get(0);
+        } catch (NullPointerException e) {
+            LOGGER.fatal("No window found, aborting");
+        }
         getLastError();
         main.show();
         WinUser.MSG msg = new WinUser.MSG();
