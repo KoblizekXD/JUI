@@ -28,6 +28,20 @@ public final class FieldAccessor {
             LOGGER.error("Access to field denied");
         }
     }
+    public void getUndeclaredFieldAndSet(String fieldName, Object data) {
+        try {
+            Field field = type.getField(fieldName);
+            if (field.trySetAccessible()) {
+                field.set(instance, data);
+            } else {
+                LOGGER.error("Field accessibility set failed");
+            }
+        } catch (NoSuchFieldException e) {
+            LOGGER.error("No such field found: {}", e.getMessage());
+        } catch (IllegalAccessException e) {
+            LOGGER.error("Access to field denied");
+        }
+    }
     public Object getField(String fieldName) {
         try {
             Field f = type.getDeclaredField(fieldName);
@@ -46,5 +60,8 @@ public final class FieldAccessor {
 
     public static void getFieldAndSet(Class<?> type, Object instance, String fieldName, Object data) {
         new FieldAccessor(type, instance).getFieldAndSet(fieldName, data);
+    }
+    public static void getUndeclaredFieldAndSet(Class<?> type, Object instance, String fieldName, Object data) {
+        new FieldAccessor(type, instance).getUndeclaredFieldAndSet(fieldName, data);
     }
 }

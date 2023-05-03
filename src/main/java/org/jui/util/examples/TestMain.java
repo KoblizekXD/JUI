@@ -1,7 +1,9 @@
 package org.jui.util.examples;
 
 import org.jui.core.Application;
+import org.jui.core.api.Configurator;
 import org.jui.core.api.win32.Win32;
+import org.jui.core.api.win32.window.Window;
 import org.jui.core.init.BootstrapLauncher;
 
 public class TestMain extends Application<Win32> {
@@ -10,7 +12,10 @@ public class TestMain extends Application<Win32> {
     }
 
     @Override
-    public void onLaunch() {
+    public void onLaunch(Configurator config) {
+        config.registerWindow(new TestWindow());
+    }
+    public static class TestWindow extends Window {
 
     }
 }
