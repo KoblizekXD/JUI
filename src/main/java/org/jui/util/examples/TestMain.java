@@ -5,6 +5,7 @@ import org.jui.core.api.Configurator;
 import org.jui.core.api.win32.Win32;
 import org.jui.core.api.win32.window.Window;
 import org.jui.core.init.BootstrapLauncher;
+import org.jui.util.Sizing;
 
 public class TestMain extends Application<Win32> {
     public static void main(String[] args) {
@@ -16,6 +17,9 @@ public class TestMain extends Application<Win32> {
         config.registerWindow(new TestWindow());
     }
     public static class TestWindow extends Window {
-
+        @Override
+        public void onWindowShow() {
+            setBounds(new Sizing(1000, 400));
+        }
     }
 }
