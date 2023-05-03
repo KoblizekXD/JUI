@@ -56,6 +56,7 @@ public final class BootstrapLauncher {
         }
         getLastError();
         main.show();
+        LOGGER.info("Showing window");
         WinUser.MSG msg = new WinUser.MSG();
         while (User32.INSTANCE.GetMessage(msg, main.getWindowHandle(), 0, 0) != 0) {
             User32.INSTANCE.TranslateMessage(msg);
