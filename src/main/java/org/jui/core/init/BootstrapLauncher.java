@@ -37,7 +37,7 @@ public final class BootstrapLauncher {
         accessor.getFieldAndSet("wndClass", wClass);
         User32.INSTANCE.RegisterClassEx(wClass);
         getLastError();
-        ((List<Window>)accessor.getField("handles")).forEach(w -> {
+        ((List<Window>)accessor.getField("windows")).forEach(w -> {
             WinDef.HWND handle = User32.INSTANCE.CreateWindowEx(
                     User32.WS_EX_TOPMOST,
                     app.getConfigurator().getName(),
@@ -50,7 +50,7 @@ public final class BootstrapLauncher {
         });
         Window main = null;
         try {
-            main = ((List<Window>)accessor.getField("handles")).get(0);
+            main = ((List<Window>)accessor.getField("windows")).get(0);
         } catch (NullPointerException e) {
             LOGGER.fatal("No window found, aborting");
         }

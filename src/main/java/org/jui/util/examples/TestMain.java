@@ -19,6 +19,7 @@ public class TestMain extends Application<Win32> {
     public static class TestWindow extends Window {
         @Override
         public void onWindowShow() {
+
             setBounds(new Sizing(1000, 400));
         }
     }
