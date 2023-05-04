@@ -14,6 +14,17 @@ public final class FieldAccessor {
         this.type = type;
         this.instance = instance;
     }
+    public void getFieldAndSet(Field field, Object data) {
+        if (field.trySetAccessible()) {
+            try {
+                field.set(instance, data);
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Access to field denied");
+            }
+        } else {
+            LOGGER.error("Field accessibility set failed");
+        }
+    }
     public void getFieldAndSet(String fieldName, Object data) {
         try {
             Field field = type.getDeclaredField(fieldName);

@@ -32,6 +32,7 @@ public abstract class Window {
         );
     }
     public final ControlManager getControls() {
+        if (controls == null) controls = new ControlManager(app, this);
         return controls;
     }
     public final Dimension getLocation() {

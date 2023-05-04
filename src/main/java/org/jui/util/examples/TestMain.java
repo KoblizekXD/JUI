@@ -4,6 +4,7 @@ import org.jui.core.Application;
 import org.jui.core.api.Configurator;
 import org.jui.core.api.win32.Win32;
 import org.jui.core.api.win32.window.Window;
+import org.jui.core.api.win32.window.controls.Button;
 import org.jui.core.init.BootstrapLauncher;
 import org.jui.util.Sizing;
 
@@ -19,7 +20,7 @@ public class TestMain extends Application<Win32> {
     public static class TestWindow extends Window {
         @Override
         public void onWindowShow() {
-
+            this.getControls().put(new Button());
             setBounds(new Sizing(1000, 400));
         }
     }

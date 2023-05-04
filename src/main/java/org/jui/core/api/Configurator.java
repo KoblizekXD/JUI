@@ -7,6 +7,7 @@ import org.jui.core.Application;
 import org.jui.core.api.win32.Win32;
 import org.jui.core.api.win32.WinProc;
 import org.jui.core.api.win32.window.Window;
+import org.jui.core.api.win32.window.controls.ControlManager;
 import org.jui.util.reflection.FieldAccessor;
 
 import java.util.ArrayList;
