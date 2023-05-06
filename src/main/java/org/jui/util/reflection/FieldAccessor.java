@@ -3,7 +3,9 @@ package org.jui.util.reflection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public final class FieldAccessor {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -13,6 +15,13 @@ public final class FieldAccessor {
     public FieldAccessor(Class<?> type, Object instance) {
         this.type = type;
         this.instance = instance;
+    }
+    public Field[] getFields() {
+        return type.getDeclaredFields();
+    }
+    public Field[] getFieldsAnnotated(Class<? extends Annotation> annotation) {
+        return Arrays.stream(type.getDeclaredFields()).filter(f -> f.isAnnotationPresent(annotation))
+                .toArray(Field[]::new);
     }
     public void getFieldAndSet(Field field, Object data) {
         if (field.trySetAccessible()) {
@@ -53,6 +62,14 @@ public final class FieldAccessor {
             LOGGER.error("Access to field denied");
         }
     }
+    public static boolean find(Class<?> type, String fieldName) {
+        try {
+            type.getDeclaredField(fieldName);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
     public Object getField(String fieldName) {
         try {
             Field f = type.getDeclaredField(fieldName);
@@ -67,6 +84,9 @@ public final class FieldAccessor {
             LOGGER.error("No such field found: {}", e.getMessage());
         }
         return null;
+    }
+    public static Object getField(Class<?> type, Object typeInstance, String fieldName) {
+        return new FieldAccessor(type, typeInstance).getField(fieldName);
     }
 
     public static void getFieldAndSet(Class<?> type, Object instance, String fieldName, Object data) {

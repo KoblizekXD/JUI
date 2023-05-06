@@ -4,4 +4,5 @@ import org.jui.annotations.Win32;
 
 @Win32
 public interface IControl {
+    void register();
 }

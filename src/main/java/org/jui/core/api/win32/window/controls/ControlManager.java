@@ -1,5 +1,6 @@
 package org.jui.core.api.win32.window.controls;
 
+import com.sun.jna.platform.win32.WinDef;
 import org.jui.annotations.Autowire;
 import org.jui.annotations.Win32;
 import org.jui.core.Application;
@@ -34,14 +35,16 @@ public final class ControlManager {
 
     public ControlManager put(IControl control) {
         FieldAccessor accessor = new FieldAccessor(control.getClass(), control);
-        Arrays.stream(control.getClass().getFields()).filter(f -> f.isAnnotationPresent(Autowire.class))
+
+        Arrays.stream(accessor.getFieldsAnnotated(Autowire.class))
                 .forEach(field -> {
-                    accessor.getFieldAndSet(field,
-                            Arrays.stream(this.getClass().getDeclaredFields())
-                                    .filter(f -> f.getName().equals(field.getName()))
-                                    .findFirst().orElse(null));
+                    if (FieldAccessor.find(this.getClass(), field.getName())) {
+                        accessor.getFieldAndSet(field,
+                                FieldAccessor.getField(this.getClass(), this, field.getName()));
+                    }
                 });
 
+        control.register();
         controls.add(control);
         return this;
     }
