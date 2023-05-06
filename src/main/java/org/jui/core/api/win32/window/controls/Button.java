@@ -1,8 +1,6 @@
 package org.jui.core.api.win32.window.controls;
 
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.*;
 import org.jui.annotations.Autowire;
 import org.jui.core.api.win32.window.IControl;
 import org.jui.core.api.win32.window.Window;
