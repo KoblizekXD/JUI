@@ -1,10 +1,11 @@
 package org.jui.core.api.win32.window.controls;
 
-import com.sun.jna.platform.win32.*;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
 import org.jui.annotations.Autowire;
 import org.jui.core.api.win32.window.IControl;
 import org.jui.core.api.win32.window.Window;
-import org.jui.util.event.Event;
 
 import static com.sun.jna.platform.win32.WinUser.*;
 
@@ -29,8 +30,5 @@ public class Button implements IControl {
                 null,       // No menu.
                 Kernel32.INSTANCE.GetModuleHandle(""),
                 null);
-    }
-    public void addHandler(Event event) {
-
     }
 }
