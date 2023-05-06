@@ -21,7 +21,7 @@ public class TestMain extends Application<Win32> {
         @Override
         public void onWindowShow() {
             this.getControls().put(new Button());
-            setBounds(new Sizing(1000, 400));
+            this.setBounds(null);
         }
     }
 }

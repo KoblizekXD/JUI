@@ -8,6 +8,8 @@ import org.jui.core.api.win32.window.controls.ControlManager;
 import org.jui.util.Sizing;
 import org.jui.util.Dimension;
 
+import static com.sun.jna.platform.win32.WinUser.*;
+
 @Win32
 public abstract class Window {
     private WinDef.HWND hwnd;
@@ -22,14 +24,15 @@ public abstract class Window {
         return hwnd;
     }
     public final void setBounds(Sizing sizing) {
-        User32.INSTANCE.MoveWindow(
+        User32.INSTANCE.SetWindowPos(hwnd, null, 0, 0, 1000, 500, SWP_NOMOVE|SWP_NOZORDER|SWP_NOACTIVATE);
+        /*User32.INSTANCE.MoveWindow(
                 hwnd,
                 getLocation().getX(),
                 getLocation().getY(),
                 sizing.getWidth(),
                 sizing.getHeight(),
                 true
-        );
+        );*/
     }
     public final ControlManager getControls() {
         if (controls == null) controls = new ControlManager(app, this);
