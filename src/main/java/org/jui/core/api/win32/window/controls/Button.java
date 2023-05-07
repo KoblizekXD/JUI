@@ -7,18 +7,19 @@ import org.jui.annotations.Autowire;
 import org.jui.core.api.win32.window.IControl;
 import org.jui.core.api.win32.window.Window;
 
+import java.util.function.Consumer;
+
 import static com.sun.jna.platform.win32.WinUser.*;
 
-public class Button implements IControl {
+public class Button extends IControl {
     @Autowire
     private Window window;
-    private WinDef.HWND buttonHandle;
 
     public Button() {}
 
     @Override
     public void register() {
-        this.buttonHandle = User32.INSTANCE.CreateWindowEx(0,  // Predefined class; Unicode assumed
+        this.handle = User32.INSTANCE.CreateWindowEx(0,  // Predefined class; Unicode assumed
                 "BUTTON",
                 "OK",      // Button text
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,  // Styles
@@ -30,5 +31,8 @@ public class Button implements IControl {
                 null,       // No menu.
                 Kernel32.INSTANCE.GetModuleHandle(""),
                 null);
+    }
+    public void onClick(Consumer<Button> apply) {
+
     }
 }
