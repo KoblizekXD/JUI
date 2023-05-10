@@ -6,7 +6,11 @@ import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.*;
 import org.apache.logging.log4j.LogManager;
 import org.jui.core.Application;
+import org.jui.core.api.win32.window.IControl;
 import org.jui.core.api.win32.window.Window;
+import org.jui.core.api.win32.window.controls.Button;
+import org.jui.util.event.Handlers;
+import org.jui.util.event.events.ButtonClickEvent;
 import org.jui.util.reflection.FieldAccessor;
 
 import java.util.List;
@@ -32,20 +36,13 @@ public class WinProc implements WinUser.WindowProc {
             case WM_PAINT:
                 break;
             case 0x0111: // Button Click
-                System.out.println(loword(lParam).intValue());
-                HWND h = app.getWindowByHandle(hwnd)
-                        .getControls().get()
-                        .getInternalHandle();
-                LogManager.getLogger().info("H: {}", hiword(lParam));
+                IControl h = app.getWindowByHandle(hwnd)
+                        .getControls().filter(lParam.longValue());
+                Handlers<ButtonClickEvent> events = (Handlers<ButtonClickEvent>) FieldAccessor.getField(h.getClass(), h, "clickEventHandlers");
+                events.invokeAll(new ButtonClickEvent());
                 break;
 
         }
         return User32.INSTANCE.DefWindowProc(hwnd, uMsg, wParam, lParam);
-    }
-    public WORD loword(LPARAM lparam) {
-        return new WORD(lparam.intValue() & 0xffff);
-    }
-    public WORD hiword(LPARAM lparam) {
-        return new WORD((lparam.intValue() >> 16) & 0xffff);
     }
 }

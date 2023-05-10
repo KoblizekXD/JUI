@@ -1,5 +1,6 @@
 package org.jui.core.api.win32.window.controls;
 
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
@@ -51,15 +52,12 @@ public final class ControlManager {
         controls.add(control);
         return this;
     }
-    public IControl get() {
-        return controls.get(0);
-    }
     public ControlManager remove(IControl control) {
         controls.remove(control);
         return this;
     }
-    public IControl filter(WinDef.HWND hwnd) {
-        return controls.stream().filter(c -> c.getInternalHandle().equals(hwnd)).findFirst().orElseThrow(
+    public IControl filter(long hwnd) {
+        return controls.stream().filter(c -> Pointer.nativeValue(c.getInternalHandle().getPointer()) == hwnd).findFirst().orElseThrow(
                 () -> new HandleException("No handle found, was the control registered?")
         );
     }
