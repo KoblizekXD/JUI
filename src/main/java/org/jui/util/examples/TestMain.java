@@ -20,7 +20,11 @@ public class TestMain extends Application<Win32> {
     public static class TestWindow extends Window {
         @Override
         public void onWindowShow() {
-            this.getControls().put(new Button());
+            Button button = new Button();
+            button.onClick((b) -> {
+                System.out.println("e");
+            });
+            this.getControls().put(button);
             this.setBounds(null);
         }
     }

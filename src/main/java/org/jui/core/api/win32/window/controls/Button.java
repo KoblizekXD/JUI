@@ -17,7 +17,7 @@ import static com.sun.jna.platform.win32.WinUser.*;
 public class Button extends IControl {
     @Autowire
     private Window window;
-    private Handlers<ButtonClickEvent> clickEventHandlers;
+    private Handlers<ButtonClickEvent> clickEventHandlers = new Handlers<>();
 
     public Button() {}
 

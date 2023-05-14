@@ -39,6 +39,7 @@ public class WinProc implements WinUser.WindowProc {
                 IControl h = app.getWindowByHandle(hwnd)
                         .getControls().filter(lParam.longValue());
                 Handlers<ButtonClickEvent> events = (Handlers<ButtonClickEvent>) FieldAccessor.getField(h.getClass(), h, "clickEventHandlers");
+                if (events == null ) break;
                 events.invokeAll(new ButtonClickEvent());
                 break;
 
