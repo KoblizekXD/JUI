@@ -8,6 +8,7 @@ import org.jui.core.api.win32.Win32;
 import org.jui.core.api.win32.WinProc;
 import org.jui.core.api.win32.window.Window;
 import org.jui.core.api.win32.window.controls.ControlManager;
+import org.jui.util.exception.HandleException;
 import org.jui.util.reflection.FieldAccessor;
 
 import java.util.ArrayList;
@@ -25,8 +26,12 @@ public final class Configurator {
     public Configurator(Application<Win32> app) {
         this.app = app;
         windows = new ArrayList<>();
-        wndProc = new WinProc();
+        wndProc = new WinProc(app);
         hInstance = Kernel32.INSTANCE.GetModuleHandle("");
+    }
+    public Window getWindowByHandle(WinDef.HWND hwnd) {
+        return windows.stream().filter(w -> w.getWindowHandle().equals(hwnd))
+                .findFirst().orElseThrow(() -> new HandleException("No valid window found"));
     }
 
     public void setName(String defaultName) {

@@ -1,6 +1,5 @@
 package org.jui.util.event;
 
-@FunctionalInterface
-public interface Event {
-    void on();
+public abstract class Event {
+    public abstract void invoke();
 }

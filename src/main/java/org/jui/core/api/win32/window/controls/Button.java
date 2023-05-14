@@ -1,23 +1,29 @@
 package org.jui.core.api.win32.window.controls;
 
-import com.sun.jna.platform.win32.*;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
 import org.jui.annotations.Autowire;
 import org.jui.core.api.win32.window.IControl;
 import org.jui.core.api.win32.window.Window;
-import org.jui.util.event.Event;
+import org.jui.util.event.Handlers;
+import org.jui.util.event.events.ButtonClickEvent;
+
+import java.util.function.Consumer;
 
 import static com.sun.jna.platform.win32.WinUser.*;
 
-public class Button implements IControl {
+public class Button extends IControl {
     @Autowire
     private Window window;
-    private WinDef.HWND buttonHandle;
+    private Handlers<ButtonClickEvent> clickEventHandlers = new Handlers<>();
 
     public Button() {}
 
     @Override
     public void register() {
-        this.buttonHandle = User32.INSTANCE.CreateWindowEx(0,  // Predefined class; Unicode assumed
+        this.handle = User32.INSTANCE.CreateWindowEx(0,  // Predefined class; Unicode assumed
                 "BUTTON",
                 "OK",      // Button text
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,  // Styles
@@ -26,11 +32,11 @@ public class Button implements IControl {
                 100,        // Button width
                 100,        // Button height
                 window.getWindowHandle(),     // Parent window
-                null,       // No menu.
+                new HMENU(Pointer.createConstant(100)),       // No menu.
                 Kernel32.INSTANCE.GetModuleHandle(""),
                 null);
     }
-    public void addHandler(Event event) {
-
+    public void onClick(Consumer<ButtonClickEvent> apply) {
+        clickEventHandlers.add(apply);
     }
 }

@@ -1,10 +1,16 @@
 package org.jui.core.api.win32.window.controls;
 
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 import org.jui.annotations.Autowire;
 import org.jui.annotations.Win32;
 import org.jui.core.Application;
 import org.jui.core.api.win32.window.IControl;
 import org.jui.core.api.win32.window.Window;
+import org.jui.util.exception.HandleException;
 import org.jui.util.reflection.FieldAccessor;
 
 import java.util.ArrayList;
@@ -50,4 +56,15 @@ public final class ControlManager {
         controls.remove(control);
         return this;
     }
+    public IControl filter(long hwnd) {
+        return controls.stream().filter(c -> Pointer.nativeValue(c.getInternalHandle().getPointer()) == hwnd).findFirst().orElseThrow(
+                () -> new HandleException("No handle found, was the control registered?")
+        );
+    }
+    /*
+    public IControl filter(int pId) {
+        return controls.stream().filter(c -> GetMenu(c.getInternalHandle())).findFirst().orElseThrow(
+                () -> new HandleException("No handle found, was the control registered?")
+        );
+    }*/
 }

@@ -8,6 +8,7 @@ import com.sun.jna.platform.win32.WinUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jui.core.Application;
+import org.jui.core.api.win32.Win32;
 import org.jui.core.api.win32.WinProc;
 import org.jui.core.api.win32.window.Window;
 import org.jui.util.reflection.FieldAccessor;
@@ -32,7 +33,7 @@ public final class BootstrapLauncher {
         WinDef.HMODULE hInstance = Kernel32.INSTANCE.GetModuleHandle("");
         WinUser.WNDCLASSEX wClass = new WinUser.WNDCLASSEX();
         wClass.hInstance = hInstance;
-        wClass.lpfnWndProc = new WinProc();
+        wClass.lpfnWndProc = new WinProc((Application<Win32>) app);
         wClass.lpszClassName = app.getConfigurator().getName();
         accessor.getFieldAndSet("wndClass", wClass);
         User32.INSTANCE.RegisterClassEx(wClass);
